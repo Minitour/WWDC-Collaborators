@@ -1,17 +1,17 @@
 import Foundation
 import UIKit
-
-
+import CFNetwork
+import CoreFoundation
 
 public class NotePad: MacApp{
-
+    
     public var desktopIcon: UIImage?
     
     public var identifier: String? = "notepad"
     
     public var windowTitle: String? = "Note Pad"
     
-    public var menuActions: [MenuAction]? = nil
+    public var menuActions: [MenuAction]? = []
     
     public var currentText: [String]
     
@@ -34,6 +34,14 @@ public class NotePad: MacApp{
     }
     
     public var container: UIView?
+    
+    public static func printCurrentPage(text: String){
+        let socket = SwiftSock(addr_: printerIP, port_: printerPort)
+        socket.connect()
+        socket.open()
+        socket.send(data: text)
+        socket.close()
+    }
     
     public func reloadData(){
         (container as? NotePadView)?.updateInterface()
@@ -268,9 +276,9 @@ public class NotePadView: UIView{
             
             //check if touch point is in the lower triangle or the upper triangle
             if isPointInTriangle(point: point,
-                              a: CGPoint(x: areaOfSelection.minX,y:areaOfSelection.minY),
-                              b: CGPoint(x: areaOfSelection.minX,y:areaOfSelection.maxY),
-                              c: CGPoint(x: areaOfSelection.maxX,y:areaOfSelection.maxY)){
+                                 a: CGPoint(x: areaOfSelection.minX,y:areaOfSelection.minY),
+                                 b: CGPoint(x: areaOfSelection.minX,y:areaOfSelection.maxY),
+                                 c: CGPoint(x: areaOfSelection.maxX,y:areaOfSelection.maxY)){
                 //go backward
                 goBackward()
                 startScale = CGAffineTransform(scaleX: 0.1, y: 0.1)

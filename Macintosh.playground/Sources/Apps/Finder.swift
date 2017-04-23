@@ -35,7 +35,7 @@ public class Finder: MacApp{
         fileMenuList.append(MenuAction(type: .seperator))
         fileMenuList.append(MenuAction(title: "Close", action: {
             if let app = self.window!.activeApplications.last {
-                 self.window?.close(app: app)
+                self.window?.close(app: app)
             }
         },runtimeClosure: {
             if (self.window?.activeApplications.count ?? 0) > 0{
@@ -53,11 +53,23 @@ public class Finder: MacApp{
             }
             return false
         }))
-        fileMenuList.append(MenuAction(title: "Print", action: nil, subMenus: nil, enabled: false))
+        
+        fileMenuList.append(MenuAction(title: "Print", action: {
+            let topApp = self.window?.activeApplications.last
+            if topApp is NotePad{
+                let notepad = topApp as! NotePad
+                let i = (notepad.container as! NotePadView).currentPage
+                let currentText = notepad.currentText[i]
+                NotePad.printCurrentPage(text: currentText.replacingOccurrences(of: "\n", with: "\r\n") + "\r\n")
+            }else{
+                print("Top app is not NotePad!")
+            }
+        }))
+        
         fileMenuList.append(MenuAction(title: "", action: nil, subMenus: nil,type: .seperator))
         fileMenuList.append(MenuAction(title: "Eject        ⌘E ", action: nil, subMenus: nil))
         
-            
+        
         menuActions?.append(MenuAction(title: "File", action: { (Void) in
             
         }, subMenus: fileMenuList))
@@ -101,7 +113,7 @@ public class Finder: MacApp{
             
             if topApp is NotePad{
                 if !(topApp is AboutMe) && !(topApp is HelpNotePad){
-                   return true
+                    return true
                 }
             }
             
@@ -165,26 +177,26 @@ public class FinderView: UIView{
         UIBezierPath(rect: rect).fill()
         
         //draw upper part
-            //draw forground rect
+        //draw forground rect
         UIColor.black.setFill()
         let upperRect = CGRect(x: 0, y: 0, width: rect.width, height: rect.height * 0.25)
         let upperForground = UIBezierPath(rect: upperRect)
         upperForground.fill()
         
-            //draw lines
+        //draw lines
         UIColor.white.setFill()
         getUpperLines(upperRect).forEach { $0.fill()}
-            //draw sun
+        //draw sun
         let sunRect = CGRect(x: rect.width * 0.59, y: rect.height * 0.10, width: rect.height * 0.25, height: rect.height * 0.25)
         UIBezierPath(roundedRect: sunRect, cornerRadius: sunRect.height / 2).fill()
         
         
         //draw upper mountains
-            //draw line
+        //draw line
         UIColor.black.set()
         UIColor.black.setFill()
         pathForUpperMountains(rect).stroke()
-            //draw objects (shadows)
+        //draw objects (shadows)
         getMountainShadows(rect).forEach {$0.fill()}
         
         //draw lower mountains
@@ -200,7 +212,7 @@ public class FinderView: UIView{
         title.draw(at: CGPoint(x: rect.width * 0.02, y: rect.height * 0.03))
         
         attributes = [NSForegroundColorAttributeName: UIColor.white,
-                                          NSFontAttributeName: SystemSettings.notePadFont]
+                      NSFontAttributeName: SystemSettings.notePadFont]
         
         let versionLabel = NSAttributedString(string: "Version 1.1 \nCreated By Antonio Zaitoun", attributes: attributes)
         versionLabel.draw(at: CGPoint(x: rect.width * 0.02, y: rect.height * 0.85))
