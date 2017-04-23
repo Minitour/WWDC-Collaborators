@@ -1,6 +1,10 @@
 # WWDC-Collaborators
 Combining WWDC 17 Scholarship Playgrounds
 
+# Screenshots
+
+<img src="Screenshots/ss1.png" height="400" />
+
 
 # How to contribution:
 
