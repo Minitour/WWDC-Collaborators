@@ -22,8 +22,8 @@ public class SwiftSock: NSObject {
     
     func send(data:String){
         let formatted = data + "\r\n"
-        let x = formatted.components(separatedBy: "\r\n")
-        print(x.count - 1)
+        //let x = formatted.components(separatedBy: "\r\n")
+        //print(x.count - 1)
         outputStream!.write(data, maxLength: data.lengthOfBytes(using: String.Encoding.utf8))
     }
     
