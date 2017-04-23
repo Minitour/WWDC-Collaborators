@@ -69,6 +69,7 @@ public class Finder: MacApp{
             if topApp is NotePad{
                 return true
             }
+            return false
     }))
         
         fileMenuList.append(MenuAction(title: "", action: nil, subMenus: nil,type: .seperator))
