@@ -64,7 +64,12 @@ public class Finder: MacApp{
             }else{
                 print("Top app is not NotePad!")
             }
-        }))
+        }, ,runtimeClosure: {
+            let topApp = self.window?.activeApplications.last
+            if topApp is NotePad{
+                return true
+            }
+    }))
         
         fileMenuList.append(MenuAction(title: "", action: nil, subMenus: nil,type: .seperator))
         fileMenuList.append(MenuAction(title: "Eject        ⌘E ", action: nil, subMenus: nil))
