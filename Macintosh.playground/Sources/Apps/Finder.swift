@@ -64,7 +64,7 @@ public class Finder: MacApp{
             }else{
                 print("Top app is not NotePad!")
             }
-        }, ,runtimeClosure: {
+        }, runtimeClosure: {
             let topApp = self.window?.activeApplications.last
             if topApp is NotePad{
                 return true
